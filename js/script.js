@@ -96,16 +96,10 @@ for (const button of buttons) {
         }
     });
 }
-document.getElementById('key--equal').addEventListener('click', function () {
-    // if (display.innerText == '') return;
-    // display.innerText = eval(display.innerText);
-})
 
+// Calculate
 function calculate(operatorKey, clickValue) {
     if (display.innerText.indexOf(operatorKey) != -1) return;
     display.innerText += clickValue;
     storageDisplay.innerText += display.innerText;
 }
-
-
-// calculate function
