@@ -3,13 +3,9 @@
 const display = document.getElementById('calculator-display');
 const storageDisplay = document.getElementById('storage-display');
 const tempDisplay = document.getElementById('temp-display');
-const buttons = document.getElementsByTagName('button');
+
+const buttons = document.querySelectorAll('.calculator-keys button');
 const oparators = document.getElementsByClassName('key--operator');
-
-
-function equalCalculate(num1, oparator, num2) {
-    num1.innerText = parseFloat(tempDisplay.innerText) + parseFloat(display.innerText);
-}
 
 // Event Listener
 for (const button of buttons) {
@@ -32,7 +28,6 @@ for (const button of buttons) {
                 } else {
                     display.innerText = parseFloat(tempDisplay.innerText) / parseFloat(display.innerText);
                 }
-
             }
             if (display.innerText == Number) return;
             storageDisplay.innerText = '';
