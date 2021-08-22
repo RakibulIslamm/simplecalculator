@@ -7,6 +7,40 @@ const tempDisplay = document.getElementById('temp-display');
 const buttons = document.querySelectorAll('.calculator-keys button');
 const oparators = document.getElementsByClassName('key--operator');
 
+let storeValue = [];
+
+// Stored Value
+function calculate(operatorKey, clickValue) {
+    if (display.innerText.indexOf(operatorKey) != -1) return;
+    display.innerText += clickValue;
+    storageDisplay.innerText += display.innerText;
+}
+
+// calculate Total
+function totalSum(arr) {
+    return new Function('return ' + arr)();
+}
+
+// Calculate Equal Total
+function equalTotal() {
+    storeValue.push(display.innerText)
+    display.innerText = totalSum(storeValue.join(""));
+    storeValue = []
+}
+
+// Calcuate Oparate Total
+function oparateTotal(oparator) {
+    if (tempDisplay.innerText == '') {
+        tempDisplay.innerText = parseFloat(display.innerText);
+    }
+    else {
+        storeValue.pop();
+        tempDisplay.innerText = totalSum(storeValue.join(""));
+        storeValue.push(oparator);
+    }
+}
+
+
 // Event Listener
 for (const button of buttons) {
     button.addEventListener('click', function (event) {
@@ -14,20 +48,16 @@ for (const button of buttons) {
         if (clickButtonValue == '=') {
             if (display.innerText == '') return
             if (storageDisplay.innerText.slice(-1) == '+') {
-                display.innerText = parseFloat(tempDisplay.innerText) + parseFloat(display.innerText);
+                equalTotal()
             }
             else if (storageDisplay.innerText.slice(-1) == '-') {
-                display.innerText = parseFloat(tempDisplay.innerText) - parseFloat(display.innerText);
+                equalTotal()
             }
-            else if (storageDisplay.innerText.slice(-1) == '×') {
-                display.innerText = parseFloat(tempDisplay.innerText) * parseFloat(display.innerText);
+            else if (storageDisplay.innerText.slice(-1) === '×') {
+                equalTotal()
             }
-            else if (storageDisplay.innerText.slice(-1) == '÷') {
-                if (display.innerText == 0) {
-                    display.innerText = 'Cannot divide by zero';
-                } else {
-                    display.innerText = parseFloat(tempDisplay.innerText) / parseFloat(display.innerText);
-                }
+            else if (storageDisplay.innerText.slice(-1) === '÷') {
+                equalTotal()
             }
             if (display.innerText == Number) return;
             storageDisplay.innerText = '';
@@ -46,55 +76,60 @@ for (const button of buttons) {
         else if (clickButtonValue == 'AC') {
             display.innerText = '';
             storageDisplay.innerText = '';
-            tempDisplay.innerText = '0';
+            tempDisplay.innerText = '';
+            storeValue = []
         }
 
         // DEL Button
         else if (clickButtonValue == 'DEL') {
             display.innerText = display.innerText.slice(0, -1);
         }
-        // add number
+
+        // Add Numbers
         else if (clickButtonValue == '+') {
+            // Code Goes Here
             if (display.innerText == '') return
+            storeValue.push(display.innerText, clickButtonValue);
+            console.log(storeValue);
             calculate('+', clickButtonValue)
-            tempDisplay.innerText = parseFloat(display.innerText) + parseFloat(tempDisplay.innerText);
+            oparateTotal('+')
             display.innerText = '';
         }
-        // Minus Number
+
+        // Subtract Numbers
         else if (clickButtonValue == '-') {
+            // Code Goes Here
             if (display.innerText == '') return
+            storeValue.push(display.innerText, clickButtonValue);
+            console.log(storeValue);
             calculate('-', clickButtonValue)
-            tempDisplay.innerText = parseFloat(display.innerText) - parseFloat(tempDisplay.innerText);
+            oparateTotal('-')
             display.innerText = '';
         }
-        // Mumtiply Number
+
+        // multiplay Numbers
         else if (clickButtonValue == '×') {
+            // Code Goes Here
             if (display.innerText == '') return
+            storeValue.push(display.innerText, '*');
+            console.log(storeValue);
             calculate('×', clickButtonValue)
-            if (tempDisplay.innerText == 0) {
-                tempDisplay.innerText = 1;
-            }
-            tempDisplay.innerText = parseFloat(display.innerText) * parseFloat(tempDisplay.innerText);
+            oparateTotal('*')
             display.innerText = '';
         }
+
+        // Divide Numbers
         else if (clickButtonValue == '÷') {
+            // Code Goes Here
             if (display.innerText == '') return
+            storeValue.push(display.innerText, '/');
+            console.log(storeValue);
             calculate('÷', clickButtonValue)
-            if (tempDisplay.innerText == 0) {
-                tempDisplay.innerText = 1;
-            }
-            tempDisplay.innerText = parseFloat(display.innerText) / parseFloat(tempDisplay.innerText);
+            oparateTotal('/')
             display.innerText = '';
         }
         else {
             display.innerText += clickButtonValue;
         }
     });
-}
-
-// Calculate
-function calculate(operatorKey, clickValue) {
-    if (display.innerText.indexOf(operatorKey) != -1) return;
-    display.innerText += clickValue;
-    storageDisplay.innerText += display.innerText;
 }
